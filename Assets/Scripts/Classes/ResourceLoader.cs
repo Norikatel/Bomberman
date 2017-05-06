@@ -8,7 +8,8 @@ namespace Assets.Scripts
 {
     class ResourceLoader : ResourceLoaderBase
     {
-        public override GameObject LoadFloor() {
+        public override GameObject LoadFloor()
+        {
             return Resources.Load("Floor") as GameObject;
         }
 
@@ -17,7 +18,8 @@ namespace Assets.Scripts
             return Resources.Load("Walls/UnbreakableWall") as GameObject;
         }
 
-        public override GameObject LoadBreakableWall() {
+        public override GameObject LoadBreakableWall()
+        {
             return Resources.Load("Walls/BreakableWall") as GameObject;
         }
     }
