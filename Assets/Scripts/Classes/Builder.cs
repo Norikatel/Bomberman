@@ -7,33 +7,37 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    class Builder:BuilderBase
+    class Builder : BuilderBase
     {
+        List<KeyValuePair<int, int>> emptyPlace = new List<KeyValuePair<int, int>>();
         private const float cubeEdge = 0.9f;
         private const float offset = 0.5f;
 
+        public Builder(int rowCount, int columnCount) {
+            for (int j = 0; j < rowCount; j++)
+                for (int i = 0; i < columnCount; i++)
+                    emptyPlace.Add(new KeyValuePair<int, int>(i, j));
+        }
+
         public override void BuildBreakableWalls(GameObject breakableWall, int rowCount, int columnCount) {
-            breakableWall.transform.localScale= new Vector3(cubeEdge, cubeEdge, cubeEdge);
+            breakableWall.transform.localScale = new Vector3(cubeEdge, cubeEdge, cubeEdge);
             int numberOfWalls = ((rowCount-2) * (columnCount-2)) / 5;
-            System.Random rand = new System.Random();
-            int countWall = 0;
-            while (countWall != numberOfWalls) {
-                int currentColumn = rand.Next(1, columnCount - 2);
-                int currentRow = rand.Next(1, rowCount - 2);
-                if (!IsPlaceForUnbreakableWall(currentColumn, currentRow, rowCount, columnCount))
-                {
-                    UnityEngine.Object.Instantiate(breakableWall, new Vector3(currentColumn - columnCount / 2f + offset, cubeEdge / 2, currentRow - rowCount / 2f + offset), new Quaternion(0, 0, 0, 0));
-                    countWall++;
-                }
+            System.Random rand = new System.Random();      
+            for(int i =0;i<numberOfWalls;i++) {
+                KeyValuePair<int, int> randomCell = emptyPlace[rand.Next(0, emptyPlace.Count - 1)];
+                UnityEngine.Object.Instantiate(breakableWall, new Vector3(randomCell.Key - columnCount / 2f + offset, cubeEdge / 2, randomCell.Value - rowCount / 2f + offset), new Quaternion(0, 0, 0, 0));
+                emptyPlace.Remove(randomCell);
             }
         }
         public override void BuildUnbreakableWalls(GameObject unbreakableWall,int rowCount, int columnCount) {
             unbreakableWall.transform.localScale = new Vector3(cubeEdge, cubeEdge, cubeEdge);
             for (int j = 0; j < rowCount; j++)
                 for (int i = 0; i < columnCount; i++)
-                    if (IsPlaceForUnbreakableWall(i,j,rowCount,columnCount))
+                    if (IsPlaceForUnbreakableWall(i, j, rowCount, columnCount))
+                    {
                         UnityEngine.Object.Instantiate(unbreakableWall, new Vector3(i - columnCount / 2f + offset, cubeEdge / 2, j - rowCount / 2f + offset), new Quaternion(0, 0, 0, 0));
-
+                        emptyPlace.Remove(new KeyValuePair<int, int>(i, j));
+                    }
         }
         public override void BuildFloor(GameObject floor,int rowCount, int columnCount) {
             floor.transform.localScale = new Vector3(columnCount / 10f, 1, rowCount / 10f);
