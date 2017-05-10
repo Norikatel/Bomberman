@@ -104,6 +104,5 @@ namespace Assets.Scripts
             return (currentRow == 0 || currentRow == rowCount - 1 || currentColumn == 0 || currentColumn == columnCount - 1
                 || ((currentColumn % 2) == 0 && (currentRow % 2) == 0));
         }
-
     }
 }

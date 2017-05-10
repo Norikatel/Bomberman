@@ -17,9 +17,6 @@ namespace Assets.Scripts
             builder.BuildBreakableWalls();
             builder.AddPlayer();
             builder.AddEnemy();
-            builder.AddEnemy();
-            builder.AddEnemy();
-            builder.AddEnemy();
         }
 
         void Update()
