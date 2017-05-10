@@ -8,8 +8,10 @@ namespace Assets.Scripts
 {
     abstract class BuilderBase
     {
-        abstract public void BuildUnbreakableWalls(GameObject unbreakableWall);
-        abstract public void BuildFloor(GameObject floor);
-        abstract public void BuildBreakableWalls(GameObject breakableWall);
+        abstract public void BuildUnbreakableWalls();
+        abstract public void BuildFloor();
+        abstract public void BuildBreakableWalls();
+        abstract public void AddPlayer();
+        abstract public void AddEnemy();
     }
 }

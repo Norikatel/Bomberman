@@ -22,5 +22,15 @@ namespace Assets.Scripts
         {
             return Resources.Load("Walls/BreakableWall") as GameObject;
         }
+
+        public override GameObject LoadPlayer()
+        {
+            return Resources.Load("DynamicObjects/Player") as GameObject;
+        }
+
+        public override GameObject LoadEnemy()
+        {
+            return Resources.Load("DynamicObjects/Enemy") as GameObject;
+        }
     }
 }

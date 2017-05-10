@@ -11,14 +11,15 @@ namespace Assets.Scripts
 
         void Start()
         {
-            ResourceLoader rs = new ResourceLoader();
-            GameObject floor = rs.LoadFloor();
-            GameObject unbreakableWall = rs.LoadUnbreakableWall();
-            GameObject breakableWall = rs.LoadBreakableWall();
-            Builder builder = new Builder(rowCount, columnCount);
-            builder.BuildFloor(floor);
-            builder.BuildUnbreakableWalls(unbreakableWall);
-            builder.BuildBreakableWalls(breakableWall);
+            Builder builder = new Builder(rowCount, columnCount, new ResourceLoader());
+            builder.BuildFloor();
+            builder.BuildUnbreakableWalls();
+            builder.BuildBreakableWalls();
+            builder.AddPlayer();
+            builder.AddEnemy();
+            builder.AddEnemy();
+            builder.AddEnemy();
+            builder.AddEnemy();
         }
 
         void Update()

@@ -11,5 +11,7 @@ namespace Assets.Scripts
         abstract public GameObject LoadFloor();
         abstract public GameObject LoadUnbreakableWall();
         abstract public GameObject LoadBreakableWall();
+        abstract public GameObject LoadPlayer();
+        abstract public GameObject LoadEnemy();
     }
 }
