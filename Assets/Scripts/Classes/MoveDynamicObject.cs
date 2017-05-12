@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class MoveDynamicObject : MonoBehaviour,IMoveable
+    public class MoveDynamicObject : MonoBehaviour, IMoveable
     {
         protected float moveHorizontal;
         protected float moveVertical;
         public float speed;
 
-        void FixedUpdate()
+        public void FixedUpdate()
         {
             Move();
         }

@@ -19,11 +19,6 @@ namespace Assets.Scripts
             RandDirection();
         }
 
-        void FixedUpdate()
-        {
-            Move();
-        }
-
         override protected void GetNewCoordinates()
         {
             if (time < timeCeiling)

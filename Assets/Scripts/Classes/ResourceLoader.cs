@@ -13,6 +13,11 @@ namespace Assets.Scripts
             return Resources.Load("Floor") as GameObject;
         }
 
+        public override GameObject LoadBomb()
+        {
+            return Resources.Load("Bomb") as GameObject;
+        }
+
         public override GameObject LoadUnbreakableWall()
         {
             return Resources.Load("Walls/UnbreakableWall") as GameObject;
