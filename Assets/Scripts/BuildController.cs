@@ -8,6 +8,7 @@ namespace Assets.Scripts
 
         public int rowCount;
         public int columnCount;
+        public int enemyCount;
 
         void Start()
         {
@@ -16,7 +17,9 @@ namespace Assets.Scripts
             builder.BuildUnbreakableWalls();
             builder.BuildBreakableWalls();
             builder.AddPlayer();
-            builder.AddEnemy();
+            for (int i = 0; i < enemyCount; i++) {
+                builder.AddEnemy();
+            }
         }
 
         void Update()
