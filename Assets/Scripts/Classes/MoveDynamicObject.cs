@@ -6,22 +6,35 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    class MoveDynamicObject: MoveDynamicObjectBase
+    public class MoveDynamicObject : MonoBehaviour,IMoveable
     {
-        GameObject dynamicObject;       
+        protected float moveHorizontal;
+        protected float moveVertical;
+        public float speed;
 
-        public MoveDynamicObject(GameObject dynamicObject) {
-            this.dynamicObject = dynamicObject;
-        }
-        override public void Move(float speed, float moveHorizontal, float moveVertical)
+        void FixedUpdate()
         {
-            Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-
-            dynamicObject.transform.position += movement * speed;
-            SetYRotation(GetYRotation(moveHorizontal, moveVertical));
+            Move();
         }
 
-        override public bool CanMove(float moveHorizontal, float moveVertical)
+        public void Move()
+        {
+            GetNewCoordinates();
+            if (CanMove())
+            {
+                Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+                transform.position += movement * speed;
+                SetYRotation(GetYRotation(moveHorizontal, moveVertical));
+            }
+        }
+
+        virtual protected void GetNewCoordinates()
+        {
+            moveHorizontal = Input.GetAxis("Horizontal");
+            moveVertical = Input.GetAxis("Vertical");
+        }
+
+        private bool CanMove()
         {
             if (moveHorizontal != 0 || moveVertical != 0)
                 return true;
@@ -30,7 +43,7 @@ namespace Assets.Scripts
 
         private void SetYRotation(int yRotation)
         {
-            dynamicObject.transform.rotation = Quaternion.Euler(0, yRotation, 0);
+            transform.rotation = Quaternion.Euler(0, yRotation, 0);
         }
 
         private int GetYRotation(float Horizontal, float Vertical)

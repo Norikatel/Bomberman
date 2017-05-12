@@ -38,17 +38,18 @@ namespace Assets.Scripts
                     emptyPlace.Remove(new KeyValuePair<int, int>(i, j));
         }
 
-        private GameObject AddDynamicObject(GameObject dynamicObject) {   
-            KeyValuePair <int, int> randomCell = emptyPlace[rand.Next(emptyPlace.Count - 1)];
+        private GameObject AddDynamicObject(GameObject dynamicObject)
+        {
+            KeyValuePair<int, int> randomCell = emptyPlace[rand.Next(emptyPlace.Count - 1)];
             GameObject gameObject = UnityEngine.Object.Instantiate(dynamicObject,
                 new Vector3(randomCell.Key - columnCount / 2f + offset, dynamicObject.transform.lossyScale.y, randomCell.Value - rowCount / 2f + offset),
-                new Quaternion(0, 0, 0, 0));          
-                emptyPlace.Remove(randomCell);
+                new Quaternion(0, 0, 0, 0));
+            emptyPlace.Remove(randomCell);
             return gameObject;
         }
 
-
-        public override void AddPlayer() {
+        public override void AddPlayer()
+        {
             GameObject player = AddDynamicObject(resourceLoader.LoadPlayer());
             ClearRadius(player.transform.localPosition.x, player.transform.localPosition.z);
         }
@@ -64,7 +65,8 @@ namespace Assets.Scripts
             BuildBreakableWalls(numberOfWalls);
         }
 
-        public void BuildBreakableWalls(int numberOfWalls) {
+        public void BuildBreakableWalls(int numberOfWalls)
+        {
             GameObject breakableWall = resourceLoader.LoadBreakableWall();
             breakableWall.transform.localScale = new Vector3(cubeEdge, cubeEdge, cubeEdge);
             for (int i = 0; i < numberOfWalls; i++)
@@ -85,8 +87,8 @@ namespace Assets.Scripts
                 for (int i = 0; i < columnCount; i++)
                     if (IsPlaceForUnbreakableWall(i, j, rowCount, columnCount))
                     {
-                        UnityEngine.Object.Instantiate(unbreakableWall, 
-                            new Vector3(i - columnCount / 2f + offset, cubeEdge / 2, j - rowCount / 2f + offset), 
+                        UnityEngine.Object.Instantiate(unbreakableWall,
+                            new Vector3(i - columnCount / 2f + offset, cubeEdge / 2, j - rowCount / 2f + offset),
                             new Quaternion(0, 0, 0, 0));
                         emptyPlace.Remove(new KeyValuePair<int, int>(i, j));
                     }
