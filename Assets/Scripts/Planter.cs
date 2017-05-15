@@ -5,6 +5,7 @@ using UnityEngine;
 public class Planter : MonoBehaviour
 {
     float bombEdge = 0.6f;
+    float lifeTime = 2f;
 
     void Update()
     {
@@ -15,9 +16,7 @@ public class Planter : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Bomb"))
-        {
             other.isTrigger = false;
-        }
     }
 
     private IEnumerator PlantBomb()
@@ -25,8 +24,7 @@ public class Planter : MonoBehaviour
         GameObject bomb = new ResourceLoader().LoadBomb();
         bomb.transform.localScale = new Vector3(bombEdge, bombEdge, bombEdge);
         bomb = Instantiate(bomb, transform.position, new Quaternion(0, 0, 0, 0));
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(lifeTime);
         bomb.SetActive(false);
     }
-
 }

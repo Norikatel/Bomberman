@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class MoveDynamicObject : MonoBehaviour, IMoveable
+    public class MoveDynamicObject : MonoBehaviour
     {
         protected float moveHorizontal;
         protected float moveVertical;
@@ -19,7 +19,7 @@ namespace Assets.Scripts
 
         public void Move()
         {
-            GetNewCoordinates();
+            GetNewDirection();
             if (CanMove())
             {
                 Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
@@ -28,7 +28,7 @@ namespace Assets.Scripts
             }
         }
 
-        virtual protected void GetNewCoordinates()
+        virtual protected void GetNewDirection()
         {
             moveHorizontal = Input.GetAxis("Horizontal");
             moveVertical = Input.GetAxis("Vertical");

@@ -12,14 +12,14 @@ namespace Assets.Scripts
     {
         private System.Random rand = new System.Random();
         int time = 0;
-        int timeCeiling = 100;
+        int timeCeiling = 50;
 
         void Start()
         {
             RandDirection();
         }
 
-        override protected void GetNewCoordinates()
+        override protected void GetNewDirection()
         {
             if (time < timeCeiling)
                 time++;
