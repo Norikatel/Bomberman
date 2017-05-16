@@ -19,7 +19,7 @@ namespace Assets.Scripts
 
         public void Move()
         {
-            GetNewDirection();
+            SetNewDirection();
             if (CanMove())
             {
                 Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
@@ -28,7 +28,7 @@ namespace Assets.Scripts
             }
         }
 
-        virtual protected void GetNewDirection()
+        virtual protected void SetNewDirection()
         {
             moveHorizontal = Input.GetAxis("Horizontal");
             moveVertical = Input.GetAxis("Vertical");

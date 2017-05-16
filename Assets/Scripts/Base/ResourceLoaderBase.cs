@@ -14,5 +14,6 @@ namespace Assets.Scripts
         abstract public GameObject LoadPlayer();
         abstract public GameObject LoadEnemy();
         abstract public GameObject LoadBomb();
+        abstract public GameObject LoadExplodeEffect();
     }
 }

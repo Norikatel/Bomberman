@@ -19,7 +19,7 @@ namespace Assets.Scripts
             RandDirection();
         }
 
-        override protected void GetNewDirection()
+        override protected void SetNewDirection()
         {
             if (time < timeCeiling)
                 time++;
