@@ -13,6 +13,7 @@ namespace Assets.Scripts
         abstract public GameObject LoadBreakableWall();
         abstract public GameObject LoadPlayer();
         abstract public GameObject LoadEnemy();
+        abstract public GameObject LoadEnemyPro();
         abstract public GameObject LoadBomb();
         abstract public GameObject LoadExplodeEffect();
     }

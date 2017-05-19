@@ -34,7 +34,7 @@ namespace Assets.Scripts
             moveVertical = Input.GetAxis("Vertical");
         }
 
-        private bool CanMove()
+        protected virtual bool CanMove()
         {
             if (moveHorizontal != 0 || moveVertical != 0)
                 return true;

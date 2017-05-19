@@ -27,7 +27,7 @@ namespace Assets.Scripts
             {
                 if (IsClosedToCell() && rand.Next(1) == 0)
                 {
-                    transform.position=transform.position.RoundPosition();
+                    transform.position = transform.position.RoundPosition();
                     RandDirection();
                     time = 0;
                 }
@@ -44,7 +44,7 @@ namespace Assets.Scripts
         {
             if (!other.gameObject.CompareTag("Floor"))
             {
-                transform.position=transform.position.RoundPosition();
+                transform.position = transform.position.RoundPosition();
                 RandDirection();
             }
         }
@@ -95,9 +95,7 @@ namespace Assets.Scripts
         private void OnCollisionEnter(Collision otherObject)
         {
             if (otherObject.collider.CompareTag("Player"))
-            {
                 StartCoroutine(Effects.FadeDiactivate(otherObject.gameObject));
-            }
         }
     }
 }

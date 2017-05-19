@@ -13,5 +13,6 @@ namespace Assets.Scripts
         abstract public void BuildBreakableWalls();
         abstract public void AddPlayer();
         abstract public void AddEnemy();
+        abstract public void AddEnemyPro();
     }
 }

@@ -9,7 +9,7 @@ namespace Assets.Scripts
         public int rowCount;
         public int columnCount;
         public int enemyCount;
-
+        
         void Start()
         {
             Builder builder = new Builder(rowCount, columnCount, new ResourceLoader());
@@ -21,10 +21,10 @@ namespace Assets.Scripts
             {
                 builder.AddEnemy();
             }
+            builder.AddEnemyPro();
         }
 
-        void Update()
-        {
-        }
+        
+
     }
 }

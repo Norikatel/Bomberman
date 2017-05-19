@@ -38,6 +38,11 @@ namespace Assets.Scripts
             return Resources.Load("DynamicObjects/Enemy") as GameObject;
         }
 
+        public override GameObject LoadEnemyPro()
+        {
+            return Resources.Load("DynamicObjects/EnemyPro") as GameObject;
+        }
+
         public override GameObject LoadExplodeEffect()
         {
             return Resources.Load("Effects/Explode") as GameObject;
