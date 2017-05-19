@@ -40,7 +40,7 @@ namespace Assets.Scripts
 
         private GameObject AddDynamicObject(GameObject dynamicObject)
         {
-            KeyValuePair<int, int> randomCell = emptyPlace[rand.Next(emptyPlace.Count - 1)];
+            KeyValuePair<int, int> randomCell = emptyPlace[rand.Next(emptyPlace.Count)];
             GameObject gameObject = UnityEngine.Object.Instantiate(dynamicObject,
                 new Vector3(randomCell.Key - columnCount / 2f + offset, dynamicObject.transform.lossyScale.y, randomCell.Value - rowCount / 2f + offset),
                 new Quaternion(0, 0, 0, 0));

@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Planter : Exploder
+public class Planter:MonoBehaviour
 {
+    public float radius = 6;
     float lifeTime = 2f;
     private int maxBomb=1;
     private int currentBomb=0;
@@ -30,18 +31,11 @@ public class Planter : Exploder
             new Quaternion(0, 0, 0, 0));
         currentBomb++;
         yield return new WaitForSeconds(lifeTime);
-        Explode(bomb, resourceLoader.LoadExplodeEffect(),DestroyObjects);
+        Effects.Explode(bomb, resourceLoader.LoadExplodeEffect(), radius);
         currentBomb--;
     }
 
-    private void DestroyObjects(List<RaycastHit> raycastHitList) {
-            foreach (var hit in raycastHitList) {
-            if (hit.collider.CompareTag("BreakableWall") ||
-                hit.collider.CompareTag("Player") || hit.collider.CompareTag("Enemy"))
-               StartCoroutine(Effects.FadeDiactivate(hit.transform.gameObject));
-        }
+    public void DestroyObject(GameObject gameObject) {
+        StartCoroutine(Effects.FadeDiactivate(gameObject));
     }
-
-
-
 }

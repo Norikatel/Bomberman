@@ -16,5 +16,13 @@ namespace Assets.Scripts
             }
             gameObject.SetActive(false);
         }
+
+        public static void Explode(GameObject bomb, GameObject effect, float radius)
+        {
+            foreach (var ps in effect.GetComponentsInChildren<ParticleSystem>())
+                ps.startSpeed = radius;
+            Object.Destroy(Object.Instantiate(effect, bomb.transform.position, new Quaternion(0, 0, 0, 0)), 1);
+            bomb.SetActive(false);
+        }
     }
 }
