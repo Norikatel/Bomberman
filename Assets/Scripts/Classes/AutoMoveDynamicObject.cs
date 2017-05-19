@@ -27,8 +27,8 @@ namespace Assets.Scripts
             {
                 if (IsClosedToCell() && rand.Next(1) == 0)
                 {
+                    transform.position=transform.position.RoundPosition();
                     RandDirection();
-                    RoundPosition();
                     time = 0;
                 }
             }
@@ -36,16 +36,16 @@ namespace Assets.Scripts
 
         private bool IsClosedToCell()
         {
-            return (Math.Abs(transform.position.x - Math.Round(transform.position.x)) < 0.1) &&
-                (Math.Abs(transform.position.z - Math.Round(transform.position.z)) < 0.1);
+            return (Math.Abs(transform.position.x - Math.Round(transform.position.x)) < 0.01) &&
+                (Math.Abs(transform.position.z - Math.Round(transform.position.z)) < 0.01);
         }
 
         void OnCollisionStay(Collision other)
         {
             if (!other.gameObject.CompareTag("Floor"))
             {
+                transform.position=transform.position.RoundPosition();
                 RandDirection();
-                RoundPosition();
             }
         }
 
@@ -66,12 +66,6 @@ namespace Assets.Scripts
                     SetUpDirection();
                     break;
             }
-        }
-
-        private void RoundPosition()
-        {
-            transform.position = new Vector3((float)Math.Round(transform.position.x),
-                transform.position.y, (float)Math.Round(transform.position.z));
         }
 
         private void SetRightDirection()
@@ -96,6 +90,14 @@ namespace Assets.Scripts
         {
             moveHorizontal = 0;
             moveVertical = 1;
+        }
+
+        private void OnCollisionEnter(Collision otherObject)
+        {
+            if (otherObject.collider.CompareTag("Player"))
+            {
+                StartCoroutine(Effects.FadeDiactivate(otherObject.gameObject));
+            }
         }
     }
 }

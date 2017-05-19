@@ -26,7 +26,7 @@ public class Planter : Exploder
     {
         GameObject bomb = resourceLoader.LoadBomb();       
         bomb = Instantiate(bomb,
-            new Vector3(transform.position.x, bomb.transform.localScale.y / 2,transform.position.z),
+            new Vector3(transform.position.x, bomb.transform.localScale.y / 2,transform.position.z).RoundPosition(),
             new Quaternion(0, 0, 0, 0));
         currentBomb++;
         yield return new WaitForSeconds(lifeTime);
@@ -35,10 +35,13 @@ public class Planter : Exploder
     }
 
     private void DestroyObjects(List<RaycastHit> raycastHitList) {
-        foreach (var hit in raycastHitList) {
-            if (hit.collider.CompareTag("BreakableWall")|| 
+            foreach (var hit in raycastHitList) {
+            if (hit.collider.CompareTag("BreakableWall") ||
                 hit.collider.CompareTag("Player") || hit.collider.CompareTag("Enemy"))
-               hit.transform.gameObject.SetActive(false);
+               StartCoroutine(Effects.FadeDiactivate(hit.transform.gameObject));
         }
     }
+
+
+
 }

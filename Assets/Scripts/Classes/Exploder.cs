@@ -8,24 +8,31 @@ namespace Assets.Scripts
 {
     public class Exploder : MonoBehaviour
     {
+        float explodeDistance = 1;
+
         List<Vector3> directions = new List<Vector3>
-        { Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+        { Vector3.left, Vector3.right, Vector3.forward, Vector3.back};
         List<RaycastHit> raycastHitList = new List<RaycastHit>();
 
-        public void Explode(GameObject bomb, GameObject effect,Action<List<RaycastHit>> action=null) {
+        public void Explode(GameObject bomb, GameObject effect, Action<List<RaycastHit>> action = null)
+        {
             Destroy(Instantiate(effect, bomb.transform.position, new Quaternion(0, 0, 0, 0)), 1);
-            CheckCollision(bomb);
+            CheckCollisions(bomb);
             bomb.SetActive(false);
-            if (!(action == null)) {
+            if (action != null)
+            {
                 action(raycastHitList);
             }
         }
 
-        private void CheckCollision(GameObject bomb) {
-            foreach (var vector in directions) {
-                if(Physics.RaycastAll(bomb.transform.position, vector, 1).FirstOrDefault().collider!=null)
-                raycastHitList.Add(Physics.RaycastAll(bomb.transform.position, vector, 1).FirstOrDefault());
-            }           
+        private void CheckCollisions(GameObject bomb)
+        {
+            foreach (var vector in directions)
+            {
+                RaycastHit firstHit = Physics.RaycastAll(bomb.transform.position, vector, explodeDistance).FirstOrDefault();
+                if (firstHit.collider != null)
+                    raycastHitList.Add(firstHit);
+            }
         }
     }
 }
