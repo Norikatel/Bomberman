@@ -40,7 +40,7 @@ namespace Assets.Scripts
                 (Math.Abs(transform.position.z - Math.Round(transform.position.z)) < 0.01);
         }
 
-        void OnCollisionStay(Collision other)
+        virtual protected void OnCollisionStay(Collision other)
         {
             if (!other.gameObject.CompareTag("Floor"))
             {
@@ -49,7 +49,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void RandDirection()
+        protected virtual void RandDirection()
         {
             switch (rand.Next(4))
             {
@@ -68,25 +68,25 @@ namespace Assets.Scripts
             }
         }
 
-        private void SetRightDirection()
+        protected void SetRightDirection()
         {
             moveHorizontal = 1;
             moveVertical = 0;
         }
 
-        private void SetLeftDirection()
+        protected void SetLeftDirection()
         {
             moveHorizontal = -1;
             moveVertical = 0;
         }
 
-        private void SetDownDirection()
+        protected void SetDownDirection()
         {
             moveHorizontal = 0;
             moveVertical = -1;
         }
 
-        private void SetUpDirection()
+        protected void SetUpDirection()
         {
             moveHorizontal = 0;
             moveVertical = 1;

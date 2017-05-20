@@ -16,8 +16,17 @@ namespace Assets.Scripts
         }
         
         public static Point GetPoint(this Vector3 position, int columnCount, int rowCount) {
-            return (new Point((int)(position.x + columnCount / 2f - offset),
-                (int)(position.z + rowCount / 2f - offset)));
+            return (new Point((int)(GetFloatX(position,columnCount)),
+                (int)(GetFloatY(position,rowCount))));
+        }
+
+        public static float GetFloatX(this Vector3 position, int columnCount) {
+            return position.x + columnCount / 2f - offset;
+        }
+
+        public static float GetFloatY(this Vector3 position, int rowCount)
+        {
+            return position.z + rowCount / 2f - offset;
         }
     }
 }
