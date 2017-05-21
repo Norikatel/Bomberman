@@ -10,7 +10,7 @@ namespace Assets.Scripts
         {
             var closedSet = new List<PathNode>();
             var openSet = new List<PathNode>();
-            PathNode startNode = new PathNode(start, null, 0, GetHeuristicPathLength(start, goal));
+            PathNode startNode = new PathNode(start, null, 0, GetApproximatePathLength(start, goal));
             openSet.Add(startNode);
             while (openSet.Count() > 0)
             {
@@ -39,7 +39,7 @@ namespace Assets.Scripts
             return null;
         }
 
-        private static int GetHeuristicPathLength(Point from, Point to)
+        private static int GetApproximatePathLength(Point from, Point to)
         {
             return Math.Abs(from.X - to.X) + Math.Abs(from.Y - to.Y);
         }
@@ -63,7 +63,7 @@ namespace Assets.Scripts
                 if (field[point.X, point.Y] != 0)
                     continue;
                 var neighbourNode = new PathNode(point, pathNode, pathNode.PathLengthFromStart + 1,
-                    GetHeuristicPathLength(point, goal));
+                    GetApproximatePathLength(point, goal));
                 result.Add(neighbourNode);
             }
             return result;

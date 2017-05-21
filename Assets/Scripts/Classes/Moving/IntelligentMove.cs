@@ -13,15 +13,13 @@ namespace Assets.Scripts
 
         private bool IsClosedTo(Point point)
         {
-            return (Math.Abs(transform.position.GetFloatX(columnCount) - point.X) < 0.1) &&
-                (Math.Abs(transform.position.GetFloatY(rowCount) - point.Y) < 0.1);
+            return (Math.Abs(transform.position.GetFloatX(columnCount) - point.X) < 0.01) &&
+                (Math.Abs(transform.position.GetFloatY(rowCount) - point.Y) < 0.01);
         }
-
-        override protected void OnCollisionStay(Collision other) { }
 
         override protected void SetNewDirection()
         {
-            if (CanMove())
+            if (path != null)
             {
                 if (IsClosedTo(path[1]))
                 {
@@ -30,11 +28,13 @@ namespace Assets.Scripts
                     SetNextDirection();
                 }
             }
+            else
+                base.SetNewDirection();
         }
 
         private void SetNextDirection()
         {
-            if (CanMove())
+            if (path!=null)
             {
                 if (path[0].X > path[1].X)
                 {
@@ -58,16 +58,11 @@ namespace Assets.Scripts
                 }
             }
         }
-
-        protected override bool CanMove()
-        {
-            return path != null;
-        }
-
+        
         private IEnumerator UpdatePath()
         {
             path = AStar.FindPath(GetField(GetWallsPointList()), GetEnemyProCoordinate(), GetPlayerCoordinate());
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             StartCoroutine(UpdatePath());
             SetNextDirection();
         }
@@ -100,14 +95,21 @@ namespace Assets.Scripts
 
         private List<Point> GetWallsPointList()
         {
-            List<Point> WallsPointList = new List<Point>();
-            GameObject[] UnbreakableWalls = GameObject.FindGameObjectsWithTag("UnbreakableWall");
-            GameObject[] BreakableWalls = GameObject.FindGameObjectsWithTag("BreakableWall");
-            foreach (var wall in UnbreakableWalls)
-                WallsPointList.Add(wall.transform.position.GetPoint(columnCount, rowCount));
-            foreach (var wall in BreakableWalls)
-                WallsPointList.Add(wall.transform.position.GetPoint(columnCount, rowCount));
-            return WallsPointList;
+            List<Point> wallsPointList = new List<Point>();
+            GameObject[] unbreakableWalls = GameObject.FindGameObjectsWithTag("UnbreakableWall");
+            GameObject[] breakableWalls = GameObject.FindGameObjectsWithTag("BreakableWall");
+            GameObject[] bombs = GameObject.FindGameObjectsWithTag("Bomb");
+            wallsPointList.AddRange(GetPoints(unbreakableWalls));
+            wallsPointList.AddRange(GetPoints(breakableWalls));
+            wallsPointList.AddRange(GetPoints(bombs));
+            return wallsPointList;
+        }
+
+        private List<Point> GetPoints(GameObject[] objects) {
+            List<Point> points = new List<Point>();
+            foreach (var obj in objects)
+                points.Add(obj.transform.position.GetPoint(columnCount, rowCount));
+            return points;
         }
     }
 }
