@@ -5,7 +5,7 @@ namespace Assets.Scripts
 {
     public static class Effects
     {
-        public static IEnumerator FadeDiactivate(GameObject gameObject)
+        public static IEnumerator FadeDeactivate(GameObject gameObject)
         {
             Color color = gameObject.GetComponent<Renderer>().material.color;
             while (color.a > 0)
@@ -19,8 +19,10 @@ namespace Assets.Scripts
 
         public static void Explode(GameObject bomb, GameObject effect, float radius)
         {
-            foreach (var ps in effect.GetComponentsInChildren<ParticleSystem>())
-                ps.startSpeed = radius;
+            foreach (var ps in effect.GetComponentsInChildren<ParticleSystem>()) {
+                var psMain = ps.main;
+                psMain.startSpeed = radius;
+            }                
             Object.Destroy(Object.Instantiate(effect, bomb.transform.position, new Quaternion(0, 0, 0, 0)), 1);
             bomb.SetActive(false);
         }

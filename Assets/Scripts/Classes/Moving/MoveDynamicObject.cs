@@ -6,18 +6,22 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class MoveDynamicObject : MonoBehaviour
+    public class MoveDynamicObject : MoveBase
     {
         protected float moveHorizontal;
         protected float moveVertical;
-        public float speed;
+        private float speed=0.05f;
 
         public void FixedUpdate()
         {
             Move();
         }
 
-        public void Move()
+        public void ActivateMaxSpeed() {
+            speed = 0.08f;
+        }
+
+        public override void Move()
         {
             SetNewDirection();
             if (CanMove())
@@ -36,9 +40,7 @@ namespace Assets.Scripts
 
         protected virtual bool CanMove()
         {
-            if (moveHorizontal != 0 || moveVertical != 0)
-                return true;
-            return false;
+            return (moveHorizontal != 0 || moveVertical != 0);
         }
 
         private void SetYRotation(int yRotation)

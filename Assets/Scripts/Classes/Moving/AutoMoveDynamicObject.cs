@@ -95,7 +95,7 @@ namespace Assets.Scripts
         private void OnCollisionEnter(Collision otherObject)
         {
             if (otherObject.collider.CompareTag("Player"))
-                StartCoroutine(Effects.FadeDiactivate(otherObject.gameObject));
+                StartCoroutine(Effects.FadeDeactivate(otherObject.gameObject));
         }
     }
 }

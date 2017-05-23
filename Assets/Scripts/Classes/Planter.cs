@@ -5,16 +5,30 @@ using UnityEngine;
 
 public class Planter:MonoBehaviour
 {
-    public float radius = 6;
+    private float radius = 1;
     float lifeTime = 2f;
     private int maxBomb=1;
     private int currentBomb=0;
+    private ScoreCounter scoreCounter;
     ResourceLoader resourceLoader = new ResourceLoader();
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && currentBomb < maxBomb)
             StartCoroutine(PlantBomb());     
+    }
+    private void Start()
+    {
+        scoreCounter = GetComponent<ScoreCounter>();
+    }
+
+    public void GiveOneMoreBomb() {
+        maxBomb++;
+    }
+
+    public void SetMoreRadius()
+    {
+        radius++;
     }
 
     private void OnTriggerExit(Collider other)
@@ -35,7 +49,25 @@ public class Planter:MonoBehaviour
         currentBomb--;
     }
 
-    public void DestroyObject(GameObject gameObject) {
-        StartCoroutine(Effects.FadeDiactivate(gameObject));
+    public void DestroyObject(GameObject gameObject)
+    {
+        StartCoroutine(Effects.FadeDeactivate(gameObject));
+        CheckAnotherAction(gameObject);
+    }
+
+    private void CheckAnotherAction(GameObject gameObject)
+    {
+        switch (gameObject.tag)
+        {
+            case "BreakableWall":
+                PowerUpsLoader.GenerateRandomPowerUp(gameObject.transform.position);
+                break;
+            case "Enemy":
+                scoreCounter.AddScoreForEnemy();
+                break;
+            case "EnemyPro":
+                scoreCounter.AddScoreForProEnemy();
+                break;
+        }
     }
 }

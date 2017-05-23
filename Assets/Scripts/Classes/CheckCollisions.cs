@@ -8,10 +8,14 @@ public class CheckCollisions : MonoBehaviour {
     private void OnParticleCollision(GameObject other)
     {
         {
-            if (other.GetComponent<Collider>().CompareTag("BreakableWall") ||
+            if (!collisionList.Contains(other)) {
+                collisionList.Add(other);
+                if (other.GetComponent<Collider>().CompareTag("BreakableWall") ||
                    other.GetComponent<Collider>().CompareTag("Player") ||
-                   other.GetComponent<Collider>().CompareTag("Enemy"))
-                  GameObject.FindGameObjectWithTag("Player").GetComponent<Planter>().DestroyObject(other);
+                   other.GetComponent<Collider>().CompareTag("Enemy") ||
+                   other.GetComponent<Collider>().CompareTag("EnemyPro"))
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<Planter>().DestroyObject(other);
+            }    
         }
     }
 }

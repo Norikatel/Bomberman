@@ -23,8 +23,8 @@ namespace Assets.Scripts
             {
                 if (IsClosedTo(path[1]))
                 {
-                    transform.position = transform.position.RoundPosition();
                     path.RemoveAt(0);
+                    transform.position = transform.position.RoundPosition();
                     SetNextDirection();
                 }
             }
@@ -61,7 +61,7 @@ namespace Assets.Scripts
         
         private IEnumerator UpdatePath()
         {
-            path = AStar.FindPath(GetField(GetWallsPointList()), GetEnemyProCoordinate(), GetPlayerCoordinate());
+            path = AStar.FindPath(GetField(GetWallsPointList()), GetEnemyCoordinate(), GetPlayerCoordinate());
             yield return new WaitForSeconds(0.5f);
             StartCoroutine(UpdatePath());
             SetNextDirection();
@@ -88,7 +88,7 @@ namespace Assets.Scripts
             return GameObject.FindGameObjectWithTag("Player").transform.position.RoundPosition().GetPoint(columnCount, rowCount);
         }
 
-        private Point GetEnemyProCoordinate()
+        private Point GetEnemyCoordinate()
         {
             return transform.position.RoundPosition().GetPoint(columnCount, rowCount);
         }

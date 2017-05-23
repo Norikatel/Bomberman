@@ -47,5 +47,30 @@ namespace Assets.Scripts
         {
             return Resources.Load("Effects/Explode") as GameObject;
         }
+
+        public override GameObject LoadBombsPowerUp()
+        {
+            return Resources.Load("PowerUps/Bombs") as GameObject;
+        }
+
+        public override GameObject LoadWallWalkerPowerUp()
+        {
+            return Resources.Load("PowerUps/WallWalker") as GameObject;
+        }
+
+        public override GameObject LoadSpeedPowerUp()
+        {
+            return Resources.Load("PowerUps/Speed") as GameObject;
+        }
+
+        public override GameObject LoadExplodeRadiusPowerUp()
+        {
+            return Resources.Load("PowerUps/ExplodeRadius") as GameObject;
+        }
+
+        public override GameObject LoadUICanvas()
+        {
+            return Resources.Load("PowerUps/ExplodeRadius") as GameObject;
+        }
     }
 }
