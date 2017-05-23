@@ -34,6 +34,7 @@ namespace Assets.Scripts
                     {
                         if (!speedPowerUp) {
                             moveDynamicObject.ActivateMaxSpeed();
+                            speedPowerUp = true;
                             other.gameObject.SetActive(false);
                         }
                         break;
@@ -51,6 +52,7 @@ namespace Assets.Scripts
                             foreach (var go in GameObject.FindGameObjectsWithTag("BreakableWall"))
                                 Physics.IgnoreCollision(playerCollider, go.GetComponent<Collider>());
                             other.gameObject.SetActive(false);
+                            wallWalkerPowerUp = true;
                         }
                         break;
                     }

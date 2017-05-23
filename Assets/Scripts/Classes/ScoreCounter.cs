@@ -25,7 +25,7 @@ namespace Assets.Scripts
                 scoreText= UITexts[1];
                 winText = UITexts[0];
             }
-            scoreText.text = "";
+            UpdateScoreText();
             winText.text = "";
         }
 

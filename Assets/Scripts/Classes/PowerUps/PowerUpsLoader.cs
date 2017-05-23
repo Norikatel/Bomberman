@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Assets.Scripts { 
-    public static class PowerUpsLoader
+    public class PowerUpsLoader
     {
         static System.Random rand = new System.Random();
         static ResourceLoader resourceLoader = new ResourceLoader();
