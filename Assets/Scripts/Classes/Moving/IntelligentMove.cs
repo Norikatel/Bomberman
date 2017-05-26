@@ -10,6 +10,22 @@ namespace Assets.Scripts
         int columnCount;
         int rowCount;
         List<Point> path = new List<Point>();
+        int[,] field;
+        Point currentPlayerPosition;
+
+        public void AddLet(Vector3 let)
+        {
+            Point p = let.RoundPosition().GetPoint(columnCount, rowCount);
+            field[p.X, p.Y] = 1;
+            UpdatePath();
+        }
+
+        public void DeleteLet(Vector3 let)
+        {
+            Point p = let.RoundPosition().GetPoint(columnCount, rowCount);
+            field[p.X, p.Y] = 0;
+            UpdatePath();
+        }
 
         private bool IsClosedTo(Point point)
         {
@@ -19,12 +35,12 @@ namespace Assets.Scripts
 
         override protected void SetNewDirection()
         {
-            if (path != null)
+            if (path != null && path.Count > 0)
             {
                 if (IsClosedTo(path[1]))
                 {
-                    path.RemoveAt(0);
                     transform.position = transform.position.RoundPosition();
+                    path.RemoveAt(0);
                     SetNextDirection();
                 }
             }
@@ -59,28 +75,36 @@ namespace Assets.Scripts
             }
         }
         
-        private IEnumerator UpdatePath()
+        private void UpdatePath()
         {
-            path = AStar.FindPath(GetField(GetWallsPointList()), GetEnemyCoordinate(), GetPlayerCoordinate());
-            yield return new WaitForSeconds(0.5f);
-            StartCoroutine(UpdatePath());
+            path = AStar.FindPath(field, GetEnemyCoordinate(), currentPlayerPosition);
             SetNextDirection();
+        }
+
+        private void Update()
+        {
+            if (GetPlayerCoordinate() != currentPlayerPosition)
+            {
+                currentPlayerPosition = GetPlayerCoordinate();
+                UpdatePath();
+            }
         }
 
         private void Start()
         {
             columnCount = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BuildController>().columnCount;
             rowCount = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BuildController>().rowCount;
-            StartCoroutine(UpdatePath());
+            field = new int[columnCount, rowCount];
+            SetField(GetWallsPointList());
+            currentPlayerPosition = GetPlayerCoordinate();
         }
         
-        private int[,] GetField(List<Point> WallsPointList)
+        private void SetField(List<Point> WallsPointList)
         {
-            int[,] field = new int[columnCount, rowCount];
+            field = new int[columnCount, rowCount];
             for (int j = 0; j < rowCount; j++)
                 for (int i = 0; i < columnCount; i++)
                     field[i, j] = WallsPointList.Contains(new Point(i, j)) ? 1 : 0;
-            return field;
         }
 
         private Point GetPlayerCoordinate()
@@ -95,14 +119,14 @@ namespace Assets.Scripts
 
         private List<Point> GetWallsPointList()
         {
-            List<Point> wallsPointList = new List<Point>();
+            List<Point> letPointList = new List<Point>();
             GameObject[] unbreakableWalls = GameObject.FindGameObjectsWithTag("UnbreakableWall");
             GameObject[] breakableWalls = GameObject.FindGameObjectsWithTag("BreakableWall");
             GameObject[] bombs = GameObject.FindGameObjectsWithTag("Bomb");
-            wallsPointList.AddRange(GetPoints(unbreakableWalls));
-            wallsPointList.AddRange(GetPoints(breakableWalls));
-            wallsPointList.AddRange(GetPoints(bombs));
-            return wallsPointList;
+            letPointList.AddRange(GetPoints(unbreakableWalls));
+            letPointList.AddRange(GetPoints(breakableWalls));
+            letPointList.AddRange(GetPoints(bombs));
+            return letPointList;
         }
 
         private List<Point> GetPoints(GameObject[] objects) {

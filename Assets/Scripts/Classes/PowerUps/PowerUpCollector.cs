@@ -8,55 +8,76 @@ namespace Assets.Scripts
 {
     class PowerUpCollector:MonoBehaviour
     {
+        private List<GameObject> listOfPowerUps = new List<GameObject>();
         private bool speedPowerUp = false;
         private bool wallWalkerPowerUp = false;
         private Planter planter;
         private MoveDynamicObject moveDynamicObject;
         private Collider playerCollider;
-
-
+        private UIController uiController;
+        
         private void Start()
         {
             planter = GetComponent<Planter>();
             moveDynamicObject = GetComponent<MoveDynamicObject>();
             playerCollider = GetComponent<Collider>();
+            uiController = GetComponent<UIController>();
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            switch (other.tag) {
-                case "BombPowerUp": {
-                        planter.GiveOneMoreBomb();
-                        other.gameObject.SetActive(false);
-                        break;
-                    }
-                case "SpeedPowerUp":
-                    {
-                        if (!speedPowerUp) {
-                            moveDynamicObject.ActivateMaxSpeed();
-                            speedPowerUp = true;
-                            other.gameObject.SetActive(false);
-                        }
-                        break;
-                    }
-                case "ExplodeRadiusPowerUp":
-                    {
-                        planter.SetMoreRadius();
-                        other.gameObject.SetActive(false);
-                        break;
-                    }
-                case "WallWalkerPowerUp":
-                    {
-                        if (!wallWalkerPowerUp)
+            if (!listOfPowerUps.Contains(other.gameObject)) {
+                switch (other.tag)
+                {
+                    case "BombPowerUp":
                         {
-                            foreach (var go in GameObject.FindGameObjectsWithTag("BreakableWall"))
-                                Physics.IgnoreCollision(playerCollider, go.GetComponent<Collider>());
-                            other.gameObject.SetActive(false);
-                            wallWalkerPowerUp = true;
+                            PickUpAction(other);
+                            planter.GiveOneMoreBomb();
+                            uiController.SetBombsCountText(planter.MaxBomb);
+                            break;
                         }
-                        break;
-                    }
+                    case "SpeedPowerUp":
+                        {
+                            if (!speedPowerUp)
+                            {
+                                PickUpAction(other);
+                                moveDynamicObject.ActivateMaxSpeed();
+                                speedPowerUp = true;
+                                uiController.SetMaxSpeedText();
+                            }
+                            else { other.gameObject.SetActive(false); }
+                            break;
+                        }
+                    case "ExplodeRadiusPowerUp":
+                        {
+                            PickUpAction(other);
+                            planter.SetMoreRadius();
+                            uiController.SetExplodeRadiusText(planter.Radius);
+                            break;
+                        }
+                    case "WallWalkerPowerUp":
+                        {
+                            if (!wallWalkerPowerUp)
+                            {
+                                PickUpAction(other);
+                                foreach (var go in GameObject.FindGameObjectsWithTag("BreakableWall"))
+                                    Physics.IgnoreCollision(playerCollider, go.GetComponent<Collider>());
+                                wallWalkerPowerUp = true;
+                                uiController.SetWallWalkerText();
+                            }
+                            else
+                                other.gameObject.SetActive(false);
+                            break;
+                        }
+                }
             }
+        }
+
+        private void PickUpAction(Collider other)
+        {
+            listOfPowerUps.Add(other.gameObject);
+            uiController.SetPickUpText();
+            other.GetComponent<PowerUp>().PlaySoundAndDeactive();
         }
     }
 }

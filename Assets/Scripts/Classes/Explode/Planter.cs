@@ -9,8 +9,11 @@ public class Planter:MonoBehaviour
     float lifeTime = 2f;
     private int maxBomb=1;
     private int currentBomb=0;
-    private ScoreCounter scoreCounter;
+    private UIController scoreCounter;
     ResourceLoader resourceLoader = new ResourceLoader();
+
+    public int MaxBomb { get { return maxBomb; } }
+    public int Radius { get { return (int)radius; } }
 
     void Update()
     {
@@ -19,7 +22,7 @@ public class Planter:MonoBehaviour
     }
     private void Start()
     {
-        scoreCounter = GetComponent<ScoreCounter>();
+        scoreCounter = GetComponent<UIController>();
     }
 
     public void GiveOneMoreBomb() {
@@ -43,9 +46,11 @@ public class Planter:MonoBehaviour
         bomb = Instantiate(bomb,
             new Vector3(transform.position.x, bomb.transform.localScale.y / 2,transform.position.z).RoundPosition(),
             new Quaternion(0, 0, 0, 0));
+        AddLetForAllEnemyPro(bomb);
         currentBomb++;
         yield return new WaitForSeconds(lifeTime);
         Effects.Explode(bomb, resourceLoader.LoadExplodeEffect(), radius);
+        DeleteLetForAllEnemyPro(bomb);
         currentBomb--;
     }
 
@@ -60,6 +65,7 @@ public class Planter:MonoBehaviour
         switch (gameObject.tag)
         {
             case "BreakableWall":
+                DeleteLetForAllEnemyPro(gameObject);
                 PowerUpsLoader.GenerateRandomPowerUp(gameObject.transform.position);
                 break;
             case "Enemy":
@@ -68,6 +74,22 @@ public class Planter:MonoBehaviour
             case "EnemyPro":
                 scoreCounter.AddScoreForProEnemy();
                 break;
+        }
+    }
+
+    private static void DeleteLetForAllEnemyPro(GameObject gameObject)
+    {
+        foreach (var enemy in GameObject.FindGameObjectsWithTag("EnemyPro"))
+        {
+            enemy.GetComponent<IntelligentMove>().DeleteLet(gameObject.transform.position);
+        }
+    }
+
+    private static void AddLetForAllEnemyPro(GameObject gameObject)
+    {
+        foreach (var enemy in GameObject.FindGameObjectsWithTag("EnemyPro"))
+        {
+            enemy.GetComponent<IntelligentMove>().AddLet(gameObject.transform.position);
         }
     }
 }
