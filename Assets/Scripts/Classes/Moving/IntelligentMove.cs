@@ -10,20 +10,20 @@ namespace Assets.Scripts
         int columnCount;
         int rowCount;
         List<Point> path = new List<Point>();
-        int[,] field;
-        Point currentPlayerPosition;
+        bool[,] field;
+        Point lastSeenPlayerPosition;
 
-        public void AddLet(Vector3 let)
+
+        public void AddBarrier(Vector3 barrier)
         {
-            Point p = let.RoundPosition().GetPoint(columnCount, rowCount);
-            field[p.X, p.Y] = 1;
-            UpdatePath();
+            Point p = barrier.RoundPosition().GetPoint(columnCount, rowCount);
+            field[p.X, p.Y] = true;
         }
 
-        public void DeleteLet(Vector3 let)
+        public void DeleteBarrier(Vector3 barrier)
         {
-            Point p = let.RoundPosition().GetPoint(columnCount, rowCount);
-            field[p.X, p.Y] = 0;
+            Point p = barrier.RoundPosition().GetPoint(columnCount, rowCount);
+            field[p.X, p.Y] = false;
             UpdatePath();
         }
 
@@ -77,34 +77,40 @@ namespace Assets.Scripts
         
         private void UpdatePath()
         {
-            path = AStar.FindPath(field, GetEnemyCoordinate(), currentPlayerPosition);
+            path = AStar.FindPath(field, GetEnemyCoordinate(), lastSeenPlayerPosition);
             SetNextDirection();
         }
 
         private void Update()
         {
-            if (GetPlayerCoordinate() != currentPlayerPosition)
+            if (IsRequireToUpdatePath())
             {
-                currentPlayerPosition = GetPlayerCoordinate();
+                lastSeenPlayerPosition = GetPlayerCoordinate();
                 UpdatePath();
             }
+        }
+
+        private bool IsRequireToUpdatePath()
+        {
+            return (GetPlayerCoordinate() != lastSeenPlayerPosition) &&
+                            field[lastSeenPlayerPosition.X, lastSeenPlayerPosition.Y] != true;
         }
 
         private void Start()
         {
             columnCount = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BuildController>().columnCount;
-            rowCount = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BuildController>().rowCount;
-            field = new int[columnCount, rowCount];
+            rowCount = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<BuildController>().rowCount;           
             SetField(GetWallsPointList());
-            currentPlayerPosition = GetPlayerCoordinate();
+            lastSeenPlayerPosition = GetPlayerCoordinate();
+            UpdatePath();
         }
         
         private void SetField(List<Point> WallsPointList)
         {
-            field = new int[columnCount, rowCount];
+            field = new bool[columnCount, rowCount];
             for (int j = 0; j < rowCount; j++)
                 for (int i = 0; i < columnCount; i++)
-                    field[i, j] = WallsPointList.Contains(new Point(i, j)) ? 1 : 0;
+                    field[i, j] = WallsPointList.Contains(new Point(i, j)) ? true : false;
         }
 
         private Point GetPlayerCoordinate()

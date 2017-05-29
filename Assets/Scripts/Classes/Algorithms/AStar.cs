@@ -6,7 +6,7 @@ namespace Assets.Scripts
 {
     public static class AStar
     {
-        public static List<Point> FindPath(int[,] field, Point start, Point goal)
+        public static List<Point> FindPath(bool[,] field, Point start, Point goal)
         {
             var closedSet = new List<PathNode>();
             var openSet = new List<PathNode>();
@@ -44,7 +44,7 @@ namespace Assets.Scripts
             return Math.Abs(from.X - to.X) + Math.Abs(from.Y - to.Y);
         }
 
-        private static List<PathNode> GetNeighbours(PathNode pathNode, Point goal, int[,] field)
+        private static List<PathNode> GetNeighbours(PathNode pathNode, Point goal, bool[,] field)
         {
             var result = new List<PathNode>();
 
@@ -60,7 +60,7 @@ namespace Assets.Scripts
                     continue;
                 if (point.Y < 0 || point.Y >= field.GetLength(1))
                     continue;
-                if (field[point.X, point.Y] != 0)
+                if (field[point.X, point.Y] != false)
                     continue;
                 var neighbourNode = new PathNode(point, pathNode, pathNode.PathLengthFromStart + 1,
                     GetApproximatePathLength(point, goal));

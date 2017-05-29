@@ -46,11 +46,11 @@ public class Planter:MonoBehaviour
         bomb = Instantiate(bomb,
             new Vector3(transform.position.x, bomb.transform.localScale.y / 2,transform.position.z).RoundPosition(),
             new Quaternion(0, 0, 0, 0));
-        AddLetForAllEnemyPro(bomb);
+        AddBarrierForAllEnemyPro(bomb);
         currentBomb++;
         yield return new WaitForSeconds(lifeTime);
         Effects.Explode(bomb, resourceLoader.LoadExplodeEffect(), radius);
-        DeleteLetForAllEnemyPro(bomb);
+        DeleteBarrierForAllEnemyPro(bomb);
         currentBomb--;
     }
 
@@ -65,7 +65,7 @@ public class Planter:MonoBehaviour
         switch (gameObject.tag)
         {
             case "BreakableWall":
-                DeleteLetForAllEnemyPro(gameObject);
+                DeleteBarrierForAllEnemyPro(gameObject);
                 PowerUpsLoader.GenerateRandomPowerUp(gameObject.transform.position);
                 break;
             case "Enemy":
@@ -77,19 +77,19 @@ public class Planter:MonoBehaviour
         }
     }
 
-    private static void DeleteLetForAllEnemyPro(GameObject gameObject)
+    private static void DeleteBarrierForAllEnemyPro(GameObject gameObject)
     {
         foreach (var enemy in GameObject.FindGameObjectsWithTag("EnemyPro"))
         {
-            enemy.GetComponent<IntelligentMove>().DeleteLet(gameObject.transform.position);
+            enemy.GetComponent<IntelligentMove>().DeleteBarrier(gameObject.transform.position);
         }
     }
 
-    private static void AddLetForAllEnemyPro(GameObject gameObject)
+    private static void AddBarrierForAllEnemyPro(GameObject gameObject)
     {
         foreach (var enemy in GameObject.FindGameObjectsWithTag("EnemyPro"))
         {
-            enemy.GetComponent<IntelligentMove>().AddLet(gameObject.transform.position);
+            enemy.GetComponent<IntelligentMove>().AddBarrier(gameObject.transform.position);
         }
     }
 }
