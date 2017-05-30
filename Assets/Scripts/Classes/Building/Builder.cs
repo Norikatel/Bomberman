@@ -42,7 +42,7 @@ namespace Assets.Scripts
         {
             Point randomCell = emptyPlace[rand.Next(emptyPlace.Count)];
             GameObject gameObject = UnityEngine.Object.Instantiate(dynamicObject,
-                new Vector3(randomCell.X - columnCount / 2f + offset, dynamicObject.transform.lossyScale.y, randomCell.Y - rowCount / 2f + offset),
+                new Vector3(randomCell.X - columnCount / 2f + offset, dynamicObject.transform.lossyScale.y/2-0.2f, randomCell.Y - rowCount / 2f + offset),
                 new Quaternion(0, 0, 0, 0));
             emptyPlace.Remove(randomCell);
             return gameObject;

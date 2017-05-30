@@ -26,6 +26,7 @@ namespace Assets.Scripts
             SetNewDirection();
             if (CanMove())
             {
+               
                 Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
                 transform.position += movement * speed;
                 SetYRotation(GetYRotation(moveHorizontal, moveVertical));
@@ -50,30 +51,31 @@ namespace Assets.Scripts
 
         private int GetYRotation(float Horizontal, float Vertical)
         {
+
             if (Horizontal == 0)
             {
                 if (Vertical < 0)
-                    return 90;
+                    return 180;
                 if (Vertical > 0)
-                    return 270;
+                    return 0;
             }
             if (Horizontal < 0)
             {
                 if (Vertical < 0)
-                    return 135;
-                if (Vertical == 0)
-                    return 180;
-                if (Vertical > 0)
                     return 225;
+                if (Vertical == 0)
+                    return 270;
+                if (Vertical > 0)
+                    return 315;
             }
             if (Horizontal > 0)
             {
                 if (Vertical > 0)
-                    return 315;
-                if (Vertical < 0)
                     return 45;
+                if (Vertical < 0)
+                    return 135;
                 if (Vertical == 0)
-                    return 0;
+                    return 90;
             }
             return 0;
         }

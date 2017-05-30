@@ -11,6 +11,10 @@ public class Planter:MonoBehaviour
     private int currentBomb=0;
     private UIController scoreCounter;
     ResourceLoader resourceLoader = new ResourceLoader();
+    Animator animator;
+    public AudioClip dropBomb;
+    public AudioClip bigBoom;
+    public AudioClip death;
 
     public int MaxBomb { get { return maxBomb; } }
     public int Radius { get { return (int)radius; } }
@@ -23,6 +27,7 @@ public class Planter:MonoBehaviour
     private void Start()
     {
         scoreCounter = GetComponent<UIController>();
+        animator = GetComponent<Animator>();
     }
 
     public void GiveOneMoreBomb() {
@@ -42,6 +47,7 @@ public class Planter:MonoBehaviour
 
     private IEnumerator PlantBomb()
     {
+        animator.SetTrigger("SetBomb");
         GameObject bomb = resourceLoader.LoadBomb();       
         bomb = Instantiate(bomb,
             new Vector3(transform.position.x, bomb.transform.localScale.y / 2,transform.position.z).RoundPosition(),
@@ -56,40 +62,50 @@ public class Planter:MonoBehaviour
 
     public void DestroyObject(GameObject gameObject)
     {
-        StartCoroutine(Effects.FadeDeactivate(gameObject));
-        CheckAnotherAction(gameObject);
+        CheckActionBeforeDeactive(gameObject);
     }
 
-    private void CheckAnotherAction(GameObject gameObject)
+    private void CheckActionBeforeDeactive(GameObject gameObject)
     {
         switch (gameObject.tag)
         {
             case "BreakableWall":
+                StartCoroutine(Effects.FadeDeactivate(gameObject));
                 DeleteBarrierForAllEnemyPro(gameObject);
                 PowerUpsLoader.GenerateRandomPowerUp(gameObject.transform.position);
                 break;
             case "Enemy":
+                gameObject.GetComponent<AutoMoveDynamicObject>().enabled = false;
+                StartCoroutine(Effects.DelayDeactivate(gameObject));
+                gameObject.GetComponent<Animator>().SetTrigger("Killing");
                 scoreCounter.AddScoreForEnemy();
                 break;
             case "EnemyPro":
+                StartCoroutine(Effects.FadeDeactivate(gameObject));
                 scoreCounter.AddScoreForProEnemy();
                 break;
+            case "Player":
+                Death();
+                break;
         }
+    }
+
+    public void Death()
+    {
+        GetComponent<PlayerMoving>().enabled = false;
+        StartCoroutine(Effects.DelayDeactivate(gameObject));
+        animator.SetTrigger("Killing");
     }
 
     private static void DeleteBarrierForAllEnemyPro(GameObject gameObject)
     {
         foreach (var enemy in GameObject.FindGameObjectsWithTag("EnemyPro"))
-        {
             enemy.GetComponent<IntelligentMove>().DeleteBarrier(gameObject.transform.position);
-        }
     }
 
     private static void AddBarrierForAllEnemyPro(GameObject gameObject)
     {
         foreach (var enemy in GameObject.FindGameObjectsWithTag("EnemyPro"))
-        {
             enemy.GetComponent<IntelligentMove>().AddBarrier(gameObject.transform.position);
-        }
     }
 }

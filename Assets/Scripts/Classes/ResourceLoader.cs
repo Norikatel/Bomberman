@@ -30,12 +30,12 @@ namespace Assets.Scripts
 
         public override GameObject LoadPlayer()
         {
-            return Resources.Load("DynamicObjects/Player") as GameObject;
+            return Resources.Load("DynamicObjects/Player1") as GameObject;
         }
 
         public override GameObject LoadEnemy()
         {
-            return Resources.Load("DynamicObjects/Enemy") as GameObject;
+            return Resources.Load("DynamicObjects/Enemy1") as GameObject;
         }
 
         public override GameObject LoadEnemyPro()

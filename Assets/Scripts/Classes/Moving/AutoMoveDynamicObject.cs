@@ -13,10 +13,13 @@ namespace Assets.Scripts
         private System.Random rand = new System.Random();
         int time = 0;
         int timeCeiling = 50;
+        Animator animator;
+        public AudioClip step;
 
         void Start()
         {
             RandDirection();
+            animator = GetComponent<Animator>();
         }
 
         override protected void SetNewDirection()
@@ -94,8 +97,10 @@ namespace Assets.Scripts
 
         private void OnCollisionEnter(Collision otherObject)
         {
-            if (otherObject.collider.CompareTag("Player"))
-                StartCoroutine(Effects.FadeDeactivate(otherObject.gameObject));
+            if (otherObject.collider.CompareTag("Player")) {
+                animator.SetTrigger("Attacking");
+                otherObject.gameObject.GetComponent<Planter>().Death();
+            }   
         }
     }
 }

@@ -17,6 +17,12 @@ namespace Assets.Scripts
             gameObject.SetActive(false);
         }
 
+        public static IEnumerator DelayDeactivate(GameObject gameObject,float sec=2f)
+        {
+            yield return new WaitForSeconds(sec);
+            gameObject.SetActive(false);
+        }
+
         public static void Explode(GameObject bomb, GameObject effect, float radius)
         {
             foreach (var ps in effect.GetComponentsInChildren<ParticleSystem>()) {
