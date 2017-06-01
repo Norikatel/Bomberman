@@ -14,7 +14,8 @@ namespace Assets.Scripts
         int time = 0;
         int timeCeiling = 50;
         Animator animator;
-        public AudioClip step;
+        public AudioClip attack;
+        public AudioClip death;
 
         void Start()
         {
@@ -97,10 +98,19 @@ namespace Assets.Scripts
 
         private void OnCollisionEnter(Collision otherObject)
         {
-            if (otherObject.collider.CompareTag("Player")) {
+            if (otherObject.collider.CompareTag("Player"))
+            {
                 animator.SetTrigger("Attacking");
-                otherObject.gameObject.GetComponent<Planter>().Death();
-            }   
+                otherObject.gameObject.GetComponent<Planter>().Kill();
+            }
+        }
+
+        public void PlayAttackSound() {
+            sound.PlayOneShot(attack);
+        }
+
+        public void PlayDeathSound() {
+            sound.PlayOneShot(death);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Assets.Scripts
             Builder builder = new Builder(rowCount, columnCount, new ResourceLoader());
             builder.BuildFloor();
             builder.BuildUnbreakableWalls();
-            builder.BuildBreakableWalls(15);
+            builder.BuildBreakableWalls();
             builder.AddPlayer();
             for (int i = 0; i < enemyCount; i++)
             {

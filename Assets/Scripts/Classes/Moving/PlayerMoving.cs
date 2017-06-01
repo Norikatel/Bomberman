@@ -8,9 +8,8 @@ namespace Assets.Scripts
 {
     class PlayerMoving:MoveDynamicObject
     {
-        private Animator animator;
-        public AudioClip step;
-
+        private Animator animator;       
+       
         protected override bool CanMove() {
             if ((moveHorizontal != 0 || moveVertical != 0))
             {
@@ -21,9 +20,7 @@ namespace Assets.Scripts
                 return false;
             } 
         }
-        
-        
-
+       
         private void Start()
         {
             animator = GetComponent<Animator>();

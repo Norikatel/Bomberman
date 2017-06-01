@@ -15,6 +15,7 @@ public class Planter:MonoBehaviour
     public AudioClip dropBomb;
     public AudioClip bigBoom;
     public AudioClip death;
+    AudioSource sound;
 
     public int MaxBomb { get { return maxBomb; } }
     public int Radius { get { return (int)radius; } }
@@ -26,8 +27,13 @@ public class Planter:MonoBehaviour
     }
     private void Start()
     {
+        sound = GetComponentInChildren<AudioSource>();
         scoreCounter = GetComponent<UIController>();
         animator = GetComponent<Animator>();
+    }
+
+    public void PlayPutBombSound() {
+        sound.PlayOneShot(dropBomb);
     }
 
     public void GiveOneMoreBomb() {
@@ -55,6 +61,7 @@ public class Planter:MonoBehaviour
         AddBarrierForAllEnemyPro(bomb);
         currentBomb++;
         yield return new WaitForSeconds(lifeTime);
+        sound.PlayOneShot(bigBoom);
         Effects.Explode(bomb, resourceLoader.LoadExplodeEffect(), radius);
         DeleteBarrierForAllEnemyPro(bomb);
         currentBomb--;
@@ -62,10 +69,10 @@ public class Planter:MonoBehaviour
 
     public void DestroyObject(GameObject gameObject)
     {
-        CheckActionBeforeDeactive(gameObject);
+        ActionDeactivate(gameObject);
     }
 
-    private void CheckActionBeforeDeactive(GameObject gameObject)
+    private void ActionDeactivate(GameObject gameObject)
     {
         switch (gameObject.tag)
         {
@@ -85,16 +92,20 @@ public class Planter:MonoBehaviour
                 scoreCounter.AddScoreForProEnemy();
                 break;
             case "Player":
-                Death();
+                Kill();
                 break;
         }
     }
 
-    public void Death()
+    public void Kill()
     {
         GetComponent<PlayerMoving>().enabled = false;
         StartCoroutine(Effects.DelayDeactivate(gameObject));
         animator.SetTrigger("Killing");
+    }
+
+    public void PlayDeathSound() {
+        sound.PlayOneShot(death);
     }
 
     private static void DeleteBarrierForAllEnemyPro(GameObject gameObject)

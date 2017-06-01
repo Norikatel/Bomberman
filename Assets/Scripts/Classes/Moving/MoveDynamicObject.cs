@@ -11,10 +11,21 @@ namespace Assets.Scripts
         protected float moveHorizontal;
         protected float moveVertical;
         private float speed=0.05f;
+        public AudioClip step;
+        protected AudioSource sound;
 
         public void FixedUpdate()
         {
             Move();
+        }
+
+        private void Awake()
+        {
+            sound = GetComponentInChildren<AudioSource>();
+        }
+
+        protected void PlayStepSound() {
+            sound.PlayOneShot(step);
         }
 
         public void ActivateMaxSpeed() {
